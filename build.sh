@@ -13,9 +13,9 @@ rm -f config.status
 if [[ "$OSTYPE" == "darwin"* ]]; then
     ./nomacro.pl
     ./configure \
-        CFLAGS="-march=native -O2 -Ofast -flto -DUSE_ASM -pg" \
-        --with-crypto=/usr/local/opt/openssl \
-        --with-curl=/usr/local/opt/curl
+        CFLAGS="-mcpu=lightning -O2 -Ofast -flto -DUSE_ASM -pg" \
+        --with-crypto=/opt/homebrew/opt/openssl \
+        --with-curl=/opt/homebrew/opt/curl
     make -j4
     strip cpuminer
     exit 0
@@ -31,7 +31,7 @@ extracflags="$extracflags -Ofast -flto -fuse-linker-plugin -ftree-loop-if-conver
 
 if [ ! "0" = `cat /proc/cpuinfo | grep -c avx` ]; then
     # march native doesn't always works, ex. some Pentium Gxxx (no avx)
-    extracflags="$extracflags -march=native"
+    extracflags="$extracflags -mcpu=lightning"
 fi
 
 ./configure --with-crypto --with-curl CFLAGS="-O2 $extracflags -DUSE_ASM -pg"
